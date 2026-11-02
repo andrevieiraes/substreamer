@@ -23,6 +23,7 @@ import '@formatjs/intl-pluralrules/locale-data/es.js';
 import '@formatjs/intl-pluralrules/locale-data/it.js';
 import '@formatjs/intl-pluralrules/locale-data/ru.js';
 import '@formatjs/intl-pluralrules/locale-data/zh.js';
+import '@formatjs/intl-pluralrules/locale-data/pt.js';
 
 import '@formatjs/intl-numberformat/polyfill-force.js';
 import '@formatjs/intl-numberformat/locale-data/en.js';
@@ -32,6 +33,7 @@ import '@formatjs/intl-numberformat/locale-data/es.js';
 import '@formatjs/intl-numberformat/locale-data/it.js';
 import '@formatjs/intl-numberformat/locale-data/ru.js';
 import '@formatjs/intl-numberformat/locale-data/zh.js';
+import '@formatjs/intl-numberformat/locale-data/pt.js';
 
 import '@formatjs/intl-datetimeformat/polyfill-force.js';
 import '@formatjs/intl-datetimeformat/add-all-tz.js';
@@ -42,6 +44,7 @@ import '@formatjs/intl-datetimeformat/locale-data/es.js';
 import '@formatjs/intl-datetimeformat/locale-data/it.js';
 import '@formatjs/intl-datetimeformat/locale-data/ru.js';
 import '@formatjs/intl-datetimeformat/locale-data/zh.js';
+import '@formatjs/intl-datetimeformat/locale-data/pt.js';
 
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -75,6 +78,7 @@ import ru from './locales/ru.json';
 import zhHans from './locales/zh-Hans.json';
 import zhHant from './locales/zh-Hant.json';
 import ja from './locales/ja.json';
+import ptBR from './locales/pt-BR.json';
 
 import { SUPPORTED_LOCALE_CODES } from './languages';
 import { localeStore } from '../store/localeStore';
@@ -90,6 +94,7 @@ const localeResources: Record<string, { translation: Record<string, string> }> =
   'zh-Hans': { translation: zhHans },
   'zh-Hant': { translation: zhHant },
   ja: { translation: ja },
+  'pt-BR': { translation: ptBR },
   // Add new entries here when enabling a language
 };
 
@@ -118,6 +123,10 @@ export function resolveAppLocale(tag: string | undefined | null): string | null 
     }
     if (region && ZH_HANT_REGIONS.has(region)) return 'zh-Hant';
     return 'zh-Hans';
+  }
+
+  if (language === 'pt') {
+    return 'pt-BR';
   }
 
   return language;

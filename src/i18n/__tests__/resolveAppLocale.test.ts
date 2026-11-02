@@ -9,6 +9,7 @@ jest.mock('@formatjs/intl-pluralrules/locale-data/es.js', () => {});
 jest.mock('@formatjs/intl-pluralrules/locale-data/it.js', () => {});
 jest.mock('@formatjs/intl-pluralrules/locale-data/ru.js', () => {});
 jest.mock('@formatjs/intl-pluralrules/locale-data/zh.js', () => {});
+jest.mock('@formatjs/intl-pluralrules/locale-data/pt.js', () => {});
 jest.mock('@formatjs/intl-numberformat/polyfill-force.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/en.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/fr.js', () => {});
@@ -17,6 +18,7 @@ jest.mock('@formatjs/intl-numberformat/locale-data/es.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/it.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/ru.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/zh.js', () => {});
+jest.mock('@formatjs/intl-numberformat/locale-data/pt.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/polyfill-force.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/add-all-tz.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/locale-data/en.js', () => {});
@@ -26,6 +28,7 @@ jest.mock('@formatjs/intl-datetimeformat/locale-data/es.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/locale-data/it.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/locale-data/ru.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/locale-data/zh.js', () => {});
+jest.mock('@formatjs/intl-datetimeformat/locale-data/pt.js', () => {});
 jest.mock('../../store/persistence/kvStorage', () => require('../../store/persistence/__mocks__/kvStorage'));
 jest.mock('expo-localization', () => ({
   getLocales: () => [{ languageCode: 'en' }],
@@ -46,6 +49,12 @@ describe('resolveAppLocale', () => {
     expect(resolveAppLocale('de-AT')).toBe('de');
     expect(resolveAppLocale('ru-RU')).toBe('ru');
     expect(resolveAppLocale('ja-JP')).toBe('ja');
+  });
+
+  it('routes Portuguese tags to pt-BR', () => {
+    expect(resolveAppLocale('pt-BR')).toBe('pt-BR');
+    expect(resolveAppLocale('pt-PT')).toBe('pt-BR');
+    expect(resolveAppLocale('pt')).toBe('pt-BR');
   });
 
   it('returns the 2-letter code for bare language tags', () => {

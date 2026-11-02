@@ -9,6 +9,7 @@ jest.mock('@formatjs/intl-pluralrules/locale-data/es.js', () => {});
 jest.mock('@formatjs/intl-pluralrules/locale-data/it.js', () => {});
 jest.mock('@formatjs/intl-pluralrules/locale-data/ru.js', () => {});
 jest.mock('@formatjs/intl-pluralrules/locale-data/zh.js', () => {});
+jest.mock('@formatjs/intl-pluralrules/locale-data/pt.js', () => {});
 jest.mock('@formatjs/intl-numberformat/polyfill-force.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/en.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/fr.js', () => {});
@@ -17,6 +18,7 @@ jest.mock('@formatjs/intl-numberformat/locale-data/es.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/it.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/ru.js', () => {});
 jest.mock('@formatjs/intl-numberformat/locale-data/zh.js', () => {});
+jest.mock('@formatjs/intl-numberformat/locale-data/pt.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/polyfill-force.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/add-all-tz.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/locale-data/en.js', () => {});
@@ -26,6 +28,7 @@ jest.mock('@formatjs/intl-datetimeformat/locale-data/es.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/locale-data/it.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/locale-data/ru.js', () => {});
 jest.mock('@formatjs/intl-datetimeformat/locale-data/zh.js', () => {});
+jest.mock('@formatjs/intl-datetimeformat/locale-data/pt.js', () => {});
 jest.mock('../../store/persistence/kvStorage', () => require('../../store/persistence/__mocks__/kvStorage'));
 
 // Default mock — overridden per test via jest.doMock + resetModules
@@ -109,6 +112,14 @@ describe('getDeviceLocale fallback', () => {
     const i18n = require('../i18n').default;
     expect(i18n.language).toBe('zh-Hans');
   });
+
+  it('resolves Brazilian Portuguese (pt-BR) to pt-BR', () => {
+    jest.doMock('expo-localization', () => ({
+      getLocales: () => [{ languageCode: 'pt', languageTag: 'pt-BR' }],
+    }));
+    const i18n = require('../i18n').default;
+    expect(i18n.language).toBe('pt-BR');
+  });
 });
 
 describe('getInitialLocale with stored locale', () => {
@@ -160,6 +171,7 @@ describe('eager-loaded locale resources', () => {
     expect(i18n.hasResourceBundle('ru', 'translation')).toBe(true);
     expect(i18n.hasResourceBundle('zh-Hans', 'translation')).toBe(true);
     expect(i18n.hasResourceBundle('zh-Hant', 'translation')).toBe(true);
+    expect(i18n.hasResourceBundle('pt-BR', 'translation')).toBe(true);
   });
 
   it('translates keys in non-English locale', () => {
