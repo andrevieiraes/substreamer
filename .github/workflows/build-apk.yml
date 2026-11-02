@@ -1,0 +1,56 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [build/apk-pt-br]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    name: Build Release APK (pt-BR)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android/sdk/ndk/25* /usr/local/lib/android/sdk/ndk/26* || true
+          df -h
+
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate translations & TypeScript
+        run: |
+          node scripts/validate-translations.js
+          npx tsc --noEmit
+
+      - name: Expo Prebuild (Android)
+        run: npx expo prebuild --platform android --clean
+        env:
+          CI: '1'
+
+      - name: Build Android Release APK
+        working-directory: android
+        run: ./gradlew assembleRelease -x lint -x test --no-daemon
+
+      - name: Upload Release APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: substreamer-pt-br-release-apk
+          path: android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
